@@ -1,5 +1,6 @@
 import datetime
 import json
+import argparse
 
 import dash
 import dash_core_components as dcc
@@ -8,9 +9,16 @@ from dash.dependencies import Input, Output
 
 from PIL import Image, ImageDraw, ImageFont
 
-path = ''
+parser = argparse.ArgumentParser(description='Generate health tracking badges for '
+                                             'Monsterpocalypse to be used in a Twitch stream')
+parser.add_argument('-o', '--output', dest='output_dir', help='Output directory to store badges',
+                    required=False, default='')
+parser.add_argument('-m', '--monsters', dest='monster_file', help='JSON file with monster data',
+                    required=False, default='monsters.json')
 
-with open('monsters.json', 'r') as monster_names_file:
+args = parser.parse_args()
+
+with open(args.monster_file, 'r') as monster_names_file:
     monster_data = json.load(monster_names_file)
 monster_names = [{'label': m['name'], 'value': m['name']} for m in monster_data]
 monster_names.append({'label': 'None', 'value': ''})
@@ -330,9 +338,9 @@ def gen_monster_img(monsters, player):
                str(monsters[lm]['health']),
                font=hlt_fnt, fill=(0, 0, 0))
 
-    img1.save(path+player+'_1.png')
-    img2.save(path+player+'_2.png')
-    img3.save(path+player+'_3.png')
+    img1.save(args.output_dir+player+'_1.png')
+    img2.save(args.output_dir+player+'_2.png')
+    img3.save(args.output_dir+player+'_3.png')
 
 
 if __name__ == '__main__':
