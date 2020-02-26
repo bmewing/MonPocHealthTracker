@@ -115,5 +115,9 @@
     "name": "Zor-Raiden",
     "health": 10,
     "transition": 5
+  },{
+    "name": "Globbicus",
+    "health": 8,
+    "transition": 4
   }
 ]
