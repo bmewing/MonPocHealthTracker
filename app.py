@@ -10,10 +10,13 @@ from dash.dependencies import Input, Output
 from PIL import Image, ImageDraw, ImageFont
 
 
-def det_state(health, transition):
-    if health <= transition:
-        return "hyper"
-    else:
+def det_state(name, health):
+    try:
+        if health <= monster_transitions[name]:
+            return "hyper"
+        else:
+            return "alpha"
+    except KeyError:
         return "alpha"
 
 
@@ -21,7 +24,7 @@ def gen_monster_img(monsters, player):
     i = len(monsters)
     width = 400
     mon_fnt = ImageFont.truetype('font/MAL_DE_OJO.ttf', 48)
-    hlt_fnt = ImageFont.truetype('font/HEADLINER.ttf', 60)
+    hlt_fnt = ImageFont.truetype('font/HEADLINER_2.ttf', 60)
 
     text_color = {
         'alpha': (9, 0, 171),
@@ -53,12 +56,17 @@ def gen_monster_img(monsters, player):
     d.rectangle((10, 10, width-10, height-10), fill=(230, 209, 214), outline=(191, 124, 36))
 
     for lm in range(len(monsters)):
+        monster_health = str(monsters[lm]['health'])
+        shift = 0
+        if monsters[lm]['bif'] >= 0 and monsters[lm]['state'] == 'hyper':
+            monster_health = str(monsters[lm]['health']) + ' i ' + str(monsters[lm]['bif'])
+            shift = -60
         tc = text_color[monsters[lm]['state']]
         d.text((20, 20 + 53 * lm),
                '%s:' % monsters[lm]['name'],
                font=mon_fnt, fill=tc)
-        d.text((357, 20 + 50 * lm),
-               str(monsters[lm]['health']),
+        d.text((357+shift, 20 + 50 * lm),
+               monster_health,
                font=hlt_fnt, fill=(0, 0, 0))
 
     img1.save(args.output_dir+player+'_1.png')
@@ -74,22 +82,45 @@ def update_health(monster):
         return 11
 
 
-def update_state(monster):
+def set_bifurcation_visibility(monster):
+    hidden = True
     if monster != '':
         relevant = [m for m in monster_data if m['name'] == monster]
-        return relevant[0]['transition']
+        try:
+            if relevant[0]['bifurcate']:
+                hidden = False
+        except KeyError:
+            hidden = True
+    return hidden
+
+
+def update_bifurcation(monster):
+    bif_health = -1
+    if monster != '':
+        relevant = [m for m in monster_data if m['name'] == monster]
+        try:
+            if relevant[0]['bifurcate']:
+                bif_health = relevant[0]['transition']
+        except KeyError:
+            bif_health = -1
+    return bif_health
+
+
+def update_state(monster):
+    if monster != '':
+        return 'Hyper Transition Point: '+str(monster_transitions[monster])
     else:
-        return 6
+        return ''
 
 
-def gen_image(lp1name, lp1h, lp1s,
-              lp2name, lp2h, lp2s,
-              lp3name, lp3h, lp3s,
+def gen_image(lp1name, lp1h, lp1b,
+              lp2name, lp2h, lp2b,
+              lp3name, lp3h, lp3b,
               player='left'
               ):
-    lp = [{'name': lp1name, 'health': lp1h, 'state': det_state(lp1h, lp1s)},
-          {'name': lp2name, 'health': lp2h, 'state': det_state(lp2h, lp2s)},
-          {'name': lp3name, 'health': lp3h, 'state': det_state(lp3h, lp3s)}]
+    lp = [{'name': lp1name, 'health': lp1h, 'state': det_state(lp1name, lp1h), 'bif': lp1b},
+          {'name': lp2name, 'health': lp2h, 'state': det_state(lp2name, lp2h), 'bif': lp2b},
+          {'name': lp3name, 'health': lp3h, 'state': det_state(lp3name, lp3h), 'bif': lp3b}]
     lp = [m for m in lp if m['name'] != '']
     gen_monster_img(lp, player)
     return datetime.datetime.now()
@@ -109,11 +140,15 @@ def gen_monster(player, i):
         html.Br(),
         html.Label('Health'),
         html.Br(),
-        dcc.Input(value=11, type='number', id='%s-health' % id_gen),
+        dcc.Input(value=11, type='number', min=0, max=11, id='%s-health' % id_gen),
         html.Br(),
-        html.Label('Hyper Transition'),
-        html.Br(),
-        dcc.Input(value=6, type='number', id='%s-state' % id_gen),
+        html.Div(id='%s-state' % id_gen),
+        html.Div([html.Br(),
+                  html.Label('Bifurcation Health'),
+                  html.Br(),
+                  dcc.Input(value=-1, type='number', min=-1, max=-1, id='%s-bifurcation' % id_gen)],
+                 id='%s-bif-div' % id_gen,
+                 hidden=True)
     ], style={'border': 'dotted 1px black',
               'padding': '10px'})
     return output
@@ -132,44 +167,41 @@ with open(args.monster_file, 'r') as monster_names_file:
     monster_data = json.load(monster_names_file)
 monster_names = [{'label': m['name'], 'value': m['name']} for m in monster_data]
 monster_names.append({'label': 'None', 'value': ''})
+monster_transitions = {m['name']: m['transition'] for m in monster_data}
 
 app = dash.Dash(__name__)
 
 
 app.layout = html.Div(children=[
     html.H1(children='Monsterpocalypse Streaming Stats Manager'),
-
-    html.Div([
-        html.Div([
-            html.Label('Left Player Name: '),
-            html.Br(),
-            dcc.Input(value='Mark', type='text', id='lp-name'),
-            html.P(),
-            gen_monster('lp', 1),
-            html.Br(),
-            gen_monster('lp', 2),
-            html.Br(),
-            gen_monster('lp', 3)
-        ], style={'width': '300px'}),
-
-        html.Br(),
-
-        html.Div([
-            html.Label('Right Player Name: '),
-            html.Br(),
-            dcc.Input(value='Benjamin', type='text', id='rp-name'),
-            html.P(),
-            gen_monster('rp', 1),
-            html.Br(),
-            gen_monster('rp', 2),
-            html.Br(),
-            gen_monster('rp', 3)
-        ], style={'width': '300px'})
-    ], style={'columnCount': 2}),
-
-    html.Div(id='dummy1'),
-    html.Div(id='dummy2')
+    html.Table(
+        [
+            html.Tr([
+                html.Th(["Left Player"]),
+                html.Th(["Right Player"])
+            ]),
+            html.Tr([html.Td(gen_monster(p, 1), style={'width': '300px'}) for p in ['lp', 'rp']]),
+            html.Tr([html.Td(gen_monster(p, 2)) for p in ['lp', 'rp']]),
+            html.Tr([html.Td(gen_monster(p, 3)) for p in ['lp', 'rp']])
+        ]
+    ),
+    html.Br(),
+    html.Br(),
+    html.Div(id='dummy1', style={'color': 'white'}),
+    html.Div(id='dummy2', style={'color': 'white'})
 ])
+
+
+#######
+# Right Player, First Monster
+#######
+
+@app.callback(
+    Output('rp-mon1-health', 'max'),
+    [Input('rp-mon1-name', 'value')]
+)
+def rp1health(*a, **kwargs):
+    return update_health(*a, **kwargs)
 
 
 @app.callback(
@@ -181,11 +213,47 @@ def rp1health(*a, **kwargs):
 
 
 @app.callback(
-    Output('rp-mon1-state', 'value'),
+    Output('rp-mon1-state', 'children'),
     [Input('rp-mon1-name', 'value')]
 )
 def rp1state(*a, **kwargs):
     return update_state(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon1-bifurcation', 'max'),
+    [Input('rp-mon1-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon1-bifurcation', 'value'),
+    [Input('rp-mon1-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon1-bif-div', 'hidden'),
+    [Input('rp-mon1-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return set_bifurcation_visibility(*a, **kwargs)
+
+
+#######
+# Right Player, Second Monster
+#######
+
+@app.callback(
+    Output('rp-mon2-health', 'max'),
+    [Input('rp-mon2-name', 'value')]
+)
+def rp1health(*a, **kwargs):
+    return update_health(*a, **kwargs)
 
 
 @app.callback(
@@ -197,11 +265,47 @@ def rp2health(*a, **kwargs):
 
 
 @app.callback(
-    Output('rp-mon2-state', 'value'),
+    Output('rp-mon2-state', 'children'),
     [Input('rp-mon2-name', 'value')]
 )
 def rp2state(*a, **kwargs):
     return update_state(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon2-bifurcation', 'max'),
+    [Input('rp-mon2-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon2-bifurcation', 'value'),
+    [Input('rp-mon2-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon2-bif-div', 'hidden'),
+    [Input('rp-mon2-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return set_bifurcation_visibility(*a, **kwargs)
+
+
+#######
+# Right Player, Third Monster
+#######
+
+@app.callback(
+    Output('rp-mon3-health', 'max'),
+    [Input('rp-mon3-name', 'value')]
+)
+def rp1health(*a, **kwargs):
+    return update_health(*a, **kwargs)
 
 
 @app.callback(
@@ -213,11 +317,47 @@ def rp3health(*a, **kwargs):
 
 
 @app.callback(
-    Output('rp-mon3-state', 'value'),
+    Output('rp-mon3-state', 'children'),
     [Input('rp-mon3-name', 'value')]
 )
 def rp3state(*a, **kwargs):
     return update_state(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon3-bifurcation', 'max'),
+    [Input('rp-mon3-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon3-bifurcation', 'value'),
+    [Input('rp-mon3-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('rp-mon3-bif-div', 'hidden'),
+    [Input('rp-mon3-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return set_bifurcation_visibility(*a, **kwargs)
+
+
+#######
+# Left Player, First Monster
+#######
+
+@app.callback(
+    Output('lp-mon1-health', 'max'),
+    [Input('lp-mon1-name', 'value')]
+)
+def rp1health(*a, **kwargs):
+    return update_health(*a, **kwargs)
 
 
 @app.callback(
@@ -229,11 +369,47 @@ def lp1health(*a, **kwargs):
 
 
 @app.callback(
-    Output('lp-mon1-state', 'value'),
+    Output('lp-mon1-state', 'children'),
     [Input('lp-mon1-name', 'value')]
 )
 def lp1state(*a, **kwargs):
     return update_state(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon1-bifurcation', 'max'),
+    [Input('lp-mon1-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon1-bifurcation', 'value'),
+    [Input('lp-mon1-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon1-bif-div', 'hidden'),
+    [Input('lp-mon1-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return set_bifurcation_visibility(*a, **kwargs)
+
+
+#######
+# Left Player, Second Monster
+#######
+
+@app.callback(
+    Output('lp-mon2-health', 'max'),
+    [Input('lp-mon2-name', 'value')]
+)
+def rp1health(*a, **kwargs):
+    return update_health(*a, **kwargs)
 
 
 @app.callback(
@@ -245,11 +421,47 @@ def lp2health(*a, **kwargs):
 
 
 @app.callback(
-    Output('lp-mon2-state', 'value'),
+    Output('lp-mon2-state', 'children'),
     [Input('lp-mon2-name', 'value')]
 )
 def lp2state(*a, **kwargs):
     return update_state(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon2-bifurcation', 'max'),
+    [Input('lp-mon2-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon2-bifurcation', 'value'),
+    [Input('lp-mon2-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon2-bif-div', 'hidden'),
+    [Input('lp-mon2-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return set_bifurcation_visibility(*a, **kwargs)
+
+
+#######
+# Left Player, Third Monster
+#######
+
+@app.callback(
+    Output('lp-mon3-health', 'max'),
+    [Input('lp-mon3-name', 'value')]
+)
+def rp1health(*a, **kwargs):
+    return update_health(*a, **kwargs)
 
 
 @app.callback(
@@ -261,7 +473,7 @@ def lp3health(*a, **kwargs):
 
 
 @app.callback(
-    Output('lp-mon3-state', 'value'),
+    Output('lp-mon3-state', 'children'),
     [Input('lp-mon3-name', 'value')]
 )
 def lp3state(*a, **kwargs):
@@ -269,16 +481,44 @@ def lp3state(*a, **kwargs):
 
 
 @app.callback(
+    Output('lp-mon3-bifurcation', 'max'),
+    [Input('lp-mon3-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon3-bifurcation', 'value'),
+    [Input('lp-mon3-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return update_bifurcation(*a, **kwargs)
+
+
+@app.callback(
+    Output('lp-mon3-bif-div', 'hidden'),
+    [Input('lp-mon3-name', 'value')]
+)
+def rp1state(*a, **kwargs):
+    return set_bifurcation_visibility(*a, **kwargs)
+
+
+#######
+# Image Generation
+#######
+
+@app.callback(
     Output('dummy1', 'children'),
     [Input('lp-mon1-name', 'value'),
      Input('lp-mon1-health', 'value'),
-     Input('lp-mon1-state', 'value'),
+     Input('lp-mon1-bifurcation', 'value'),
      Input('lp-mon2-name', 'value'),
      Input('lp-mon2-health', 'value'),
-     Input('lp-mon2-state', 'value'),
+     Input('lp-mon2-bifurcation', 'value'),
      Input('lp-mon3-name', 'value'),
      Input('lp-mon3-health', 'value'),
-     Input('lp-mon3-state', 'value')
+     Input('lp-mon3-bifurcation', 'value')
      ]
 )
 def gen_left_image(*a, **kwargs):
@@ -289,13 +529,13 @@ def gen_left_image(*a, **kwargs):
     Output('dummy2', 'children'),
     [Input('rp-mon1-name', 'value'),
      Input('rp-mon1-health', 'value'),
-     Input('rp-mon1-state', 'value'),
+     Input('rp-mon1-bifurcation', 'value'),
      Input('rp-mon2-name', 'value'),
      Input('rp-mon2-health', 'value'),
-     Input('rp-mon2-state', 'value'),
+     Input('rp-mon2-bifurcation', 'value'),
      Input('rp-mon3-name', 'value'),
      Input('rp-mon3-health', 'value'),
-     Input('rp-mon3-state', 'value')
+     Input('rp-mon3-bifurcation', 'value')
      ]
 )
 def gen_right_image(*a, **kwargs):
