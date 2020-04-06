@@ -60,7 +60,6 @@ def gen_monster_img(monsters, player):
         shift = 0
         if monsters[lm]['bif'] >= 0 and monsters[lm]['state'] == 'hyper':
             monster_health = str(monsters[lm]['health']) + ' i ' + str(monsters[lm]['bif'])
-            print(monster_health)
             shift = -60
         tc = text_color[monsters[lm]['state']]
         d.text((20, 20 + 53 * lm),
