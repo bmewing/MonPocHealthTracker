@@ -118,6 +118,7 @@
   },{
     "name": "Globbicus",
     "health": 8,
-    "transition": 4
+    "transition": 4,
+    "bifurcate": true
   }
 ]
