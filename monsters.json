@@ -120,5 +120,20 @@
     "health": 8,
     "transition": 4,
     "bifurcate": true
+  },
+  {
+      "name": "Blastikutter",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Leviathron",
+      "health": 13,
+      "transition": 6
+  },
+  {
+      "name": "Gallamaxus",
+      "health": 11,
+      "transition": 5
   }
 ]
