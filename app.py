@@ -20,58 +20,69 @@ def det_state(name, health):
         return "alpha"
 
 
-def gen_monster_img(monsters, player):
-    i = len(monsters)
-    width = 400
-    mon_fnt = ImageFont.truetype('font/MAL_DE_OJO.ttf', 48)
-    hlt_fnt = ImageFont.truetype('font/HEADLINER_2.ttf', 60)
+def gen_single_monster(mon=None, player='left', input_dir=None):
+    if input_dir is None:
+        input_dir = args.input_dir
 
-    text_color = {
-        'alpha': (9, 0, 171),
-        'hyper': (163, 158, 0)
-    }
-
-    height1 = 84
-    height2 = 137
-    height3 = 190
-
-    img1 = Image.new('RGBA', (width, height1), color=(255, 255, 255, 0))
-    img2 = Image.new('RGBA', (width, height2), color=(255, 255, 255, 0))
-    img3 = Image.new('RGBA', (width, height3), color=(255, 255, 255, 0))
-
-    if i == 1:
-        height = height1
-        img1 = Image.new('RGB', (width, height), color=(166, 0, 22))
-        d = ImageDraw.Draw(img1)
-    elif i == 2:
-        height = height2
-        img2 = Image.new('RGB', (width, height), color=(166, 0, 22))
-        d = ImageDraw.Draw(img2)
-    elif i == 3:
-        height = height3
-        img3 = Image.new('RGB', (width, height), color=(166, 0, 22))
-        d = ImageDraw.Draw(img3)
+    if mon is None:
+        img = Image.new('RGBA', (320, 320), color=(255, 255, 255, 0))
     else:
-        return ''
-    d.rectangle((10, 10, width-10, height-10), fill=(230, 209, 214), outline=(191, 124, 36))
+        mon_fnt = ImageFont.truetype('font/MAL_DE_OJO.ttf', 48)
+        hlt_fnt = ImageFont.truetype('font/HEADLINER_2.ttf', 60)
 
-    for lm in range(len(monsters)):
-        monster_health = str(monsters[lm]['health'])
-        shift = 0
-        if monsters[lm]['bif'] >= 0 and monsters[lm]['state'] == 'hyper':
-            monster_health = str(monsters[lm]['health']) + ' i ' + str(monsters[lm]['bif'])
-            shift = -60
-        tc = text_color[monsters[lm]['state']]
-        d.text((20, 20 + 53 * lm),
-               '%s:' % monsters[lm]['name'],
-               font=mon_fnt, fill=tc)
-        d.text((357+shift, 20 + 50 * lm),
+        img = Image.open('{dir}{player}_background.png'.format(dir=input_dir, player=player))
+        name = mon['name']
+        state = mon['state']
+        monster_health = str(mon['health'])
+        try:
+            face = Image.open('{dir}profiles/{state}/{name}.png'.format(
+                dir=input_dir,
+                state=state,
+                name=name
+            ))
+            if player == 'right':
+                face = face.transpose(Image.FLIP_LEFT_RIGHT)
+        except FileNotFoundError:
+            face = Image.open('{dir}profiles/{state}/unknown.png'.format(
+                dir=input_dir,
+                state=state,
+                name=name
+            ))
+        heart = Image.open('{dir}{state}_heart.png'.format(dir=input_dir, state=state))
+        if player == 'right':
+            heart_coord = (212, 217)
+            heart2_coord = (15, 217)
+        else:
+            heart_coord = (15, 220)
+            heart2_coord = (215, 220)
+        img.paste(face, (10, 10), face)
+        img.paste(heart, heart_coord, heart)
+        d = ImageDraw.Draw(img)
+
+        if mon['bif'] >= 0 and state == 'hyper':
+            img.paste(heart, heart2_coord, heart)
+            d.text((heart2_coord[0] + 32, heart2_coord[1] + 20),
+                   str(mon['bif']),
+                   font=hlt_fnt, fill=(0, 0, 0))
+
+        d.text((20, 20),
+               name,
+               font=mon_fnt, fill=(0, 0, 0))
+        d.text((heart_coord[0] + 32, heart_coord[1]+20),
                monster_health,
                font=hlt_fnt, fill=(0, 0, 0))
 
-    img1.save(args.output_dir+player+'_1.png')
-    img2.save(args.output_dir+player+'_2.png')
-    img3.save(args.output_dir+player+'_3.png')
+    return img
+
+
+def gen_monster_img(monsters, player):
+    for lm in range(3):
+        try:
+            mon = monsters[lm]
+        except IndexError:
+            mon = None
+        this_im = gen_single_monster(mon, player)
+        this_im.save('{dir}{player}_{i}.png'.format(dir=args.output_dir, player=player, i=lm+1))
 
 
 def update_health(monster):
@@ -110,7 +121,7 @@ def update_state(monster):
     if monster != '':
         return 'Hyper Transition Point: '+str(monster_transitions[monster])
     else:
-        return ''
+        return 'Hyper Transition Point: TBD'
 
 
 def gen_image(lp1name, lp1h, lp1b,
@@ -157,7 +168,9 @@ def gen_monster(player, i):
 parser = argparse.ArgumentParser(description='Generate health tracking badges for '
                                              'Monsterpocalypse to be used in a Twitch stream')
 parser.add_argument('-o', '--output', dest='output_dir', help='Output directory to store badges',
-                    required=False, default='')
+                    required=False, default='output/')
+parser.add_argument('-i', '--input', dest='input_dir', help='Input directory with monster images',
+                    required=False, default='images/')
 parser.add_argument('-m', '--monsters', dest='monster_file', help='JSON file with monster data',
                     required=False, default='monsters.json')
 
