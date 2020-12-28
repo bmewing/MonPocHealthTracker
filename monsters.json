@@ -174,5 +174,35 @@
       "name": "Zybanos",
       "health": 10,
       "transition": 5
+  },
+  {
+      "name": "Gausamal",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Cassander",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Komkor 001",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Voyaka 099",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Zavod 075",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Preceptor",
+      "health": 11,
+      "transition": 5
   }
 ]
