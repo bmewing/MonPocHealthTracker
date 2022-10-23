@@ -204,5 +204,65 @@
       "name": "Preceptor",
       "health": 11,
       "transition": 5
+  },
+  {
+      "name": "God of Vemana",
+      "health": 12,
+      "transition": 6
+  },
+  {
+      "name": "King of Camazotz",
+      "health": 11,
+      "transition": 7
+  },
+  {
+      "name": "Lord of Mictal",
+      "health": 10,
+      "transition": 4
+  },
+  {
+      "name": "Mogroth",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Phobos-7",
+      "health": 11,
+      "transition": 7
+  },
+  {
+      "name": "Karkinos",
+      "health": 10,
+      "transition": 4
+  },
+  {
+      "name": "Zor-Necros",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Zorog",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Mucustos",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Robo Kondo",
+      "health": 12,
+      "transition": 6
+  },
+  {
+      "name": "Ultra Cyber Khan",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Slingoozer",
+      "health": 11,
+      "transition": 6
   }
 ]
