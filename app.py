@@ -2,6 +2,7 @@ import datetime
 import json
 import argparse
 import re
+import glob
 
 import dash
 import dash_core_components as dcc
@@ -9,6 +10,12 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from PIL import Image, ImageDraw, ImageFont
+
+
+def read_json(fp):
+    with open(fp, 'r') as monster_names_file:
+        md = json.load(monster_names_file)
+    return md
 
 
 def det_state(health, transition):
@@ -174,13 +181,15 @@ parser.add_argument('-o', '--output', dest='output_dir', help='Output directory 
                     required=False, default='output/')
 parser.add_argument('-i', '--input', dest='input_dir', help='Input directory with monster images',
                     required=False, default='images/')
-parser.add_argument('-m', '--monsters', dest='monster_file', help='JSON file with monster data',
-                    required=False, default='monsters.json')
+parser.add_argument('-m', '--monsters', dest='monster_file', help='directory with JSON files with monster data',
+                    required=False, default='data')
 
 args = parser.parse_args()
 
-with open(args.monster_file, 'r') as monster_names_file:
-    monster_data = json.load(monster_names_file)
+files = glob.glob(args.monster_file+'/**/*.json', recursive=True)
+monster_data_nested = [read_json(fp) for fp in files]
+monster_data = [item for sublist in monster_data_nested for item in sublist]
+
 monster_names = [{'label': m['name'], 'value': m['name']} for m in monster_data]
 monster_names.append({'label': 'None', 'value': ''})
 monster_transitions = {m['name']: m['transition'] for m in monster_data}
