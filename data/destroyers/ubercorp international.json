@@ -1,0 +1,27 @@
+[
+  {
+      "name": "Ultra Cyber Khan",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Cyber Khan",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Gorghadratron",
+      "health": 11,
+      "transition": 4
+  },
+  {
+      "name": "Mecha-Maxim",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Robo Kondo",
+      "health": 12,
+      "transition": 6
+  }
+]

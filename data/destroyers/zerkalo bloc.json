@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Komkor 001",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Voyaka 099",
+      "health": 11,
+      "transition": 5
+  },
+  {
+    "name": "Zavod 075",
+    "health": 11,
+    "transition": 5
+  }
+]

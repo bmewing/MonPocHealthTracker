@@ -1,0 +1,27 @@
+[
+  {
+      "name": "Pteradax",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Terra Khan",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Armodax",
+      "health": 12,
+      "transition": 6
+  },
+  {
+      "name": "Magma Khan",
+      "health": 9,
+      "transition": 5
+  },
+  {
+      "name": "Tyranix",
+      "health": 11,
+      "transition": 6
+  }
+]

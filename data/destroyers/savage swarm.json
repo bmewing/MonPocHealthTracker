@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Xixorax",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Mucustos",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Dynastavus",
+      "health": 10,
+      "transition": 3
+  }
+]

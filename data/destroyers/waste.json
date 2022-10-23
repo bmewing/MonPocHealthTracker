@@ -1,0 +1,13 @@
+[
+  {
+      "name": "Slingoozer",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Globbicus",
+      "health": 8,
+      "transition": 4,
+      "bifurcate": true
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+      "name": "Sky Sentinel",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Defender X",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Nova ESR",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Legionnaire",
+      "health": 11,
+      "transition": 6
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+      "name": "Krackenoctus",
+      "health": 12,
+      "transition": 6
+  },
+  {
+      "name": "Leviathron",
+      "health": 13,
+      "transition": 6
+  }
+]

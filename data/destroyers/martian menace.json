@@ -1,0 +1,22 @@
+[
+  {
+      "name": "Phobos-7",
+      "health": 11,
+      "transition": 7
+  },
+  {
+      "name": "Ares Mothership",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Deimos-9",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Tharsis-5",
+      "health": 11,
+      "transition": 5
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Gallamaxus",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Karkinos",
+      "health": 10,
+      "transition": 4
+  },
+  {
+      "name": "Zor-Necros",
+      "health": 10,
+      "transition": 5
+  }
+]

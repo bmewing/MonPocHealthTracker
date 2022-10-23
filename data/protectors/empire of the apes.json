@@ -1,0 +1,22 @@
+[
+  {
+      "name": "General Hondo",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "King Kondo",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "White Dajan",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Gakura",
+      "health": 11,
+      "transition": 5
+  }
+]

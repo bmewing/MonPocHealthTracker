@@ -1,0 +1,22 @@
+[
+  {
+      "name": "Gorghadra",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Rogzor",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Xaxor",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Zorog",
+      "health": 11,
+      "transition": 6
+  }
+]
