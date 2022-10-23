@@ -1,0 +1,17 @@
+[
+  {
+      "name": "God of Vemana",
+      "health": 12,
+      "transition": 6
+  },
+  {
+      "name": "King of Camazotz",
+      "health": 11,
+      "transition": 7
+  },
+  {
+      "name": "Lord of Mictal",
+      "health": 10,
+      "transition": 4
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Preceptor",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Conductor",
+      "health": 11,
+      "transition": 4
+  },
+  {
+      "name": "Magistrate",
+      "health": 12,
+      "transition": 6
+  }
+]

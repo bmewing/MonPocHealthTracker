@@ -1,0 +1,22 @@
+[
+  {
+      "name": "Yasheth",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Ulgoth",
+      "health": 12,
+      "transition": 7
+  },
+  {
+      "name": "Cthugrosh",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Mogroth",
+      "health": 11,
+      "transition": 6
+  }
+]

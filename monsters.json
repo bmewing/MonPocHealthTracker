@@ -5,63 +5,12 @@
       "transition": 6
   },
   {
-      "name": "Ares Mothership",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Blastikutter",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Cthugrosh",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Cyber Khan",
-      "health": 11,
-      "transition": 5
-  },
-  {
       "name": "Defender X",
       "health": 11,
       "transition": 5
   },
   {
-      "name": "Deimos-9",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Gallamaxus",
-      "health": 11,
-      "transition": 5
-  },
-  {
       "name": "General Hondo",
-      "health": 10,
-      "transition": 5
-  },
-  {
-      "name": "Globbicus",
-      "health": 8,
-      "transition": 4,
-      "bifurcate": true
-  },
-  {
-      "name": "Gorghadra",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Gorghadratron",
-      "health": 11,
-      "transition": 4
-  },
-  {
-      "name": "Hammerklak",
       "health": 10,
       "transition": 5
   },
@@ -86,22 +35,12 @@
       "transition": 6
   },
   {
-      "name": "Mecha-Maxim",
-      "health": 10,
-      "transition": 5
-  },
-  {
       "name": "Nova ESR",
       "health": 10,
       "transition": 5
   },
   {
       "name": "Pteradax",
-      "health": 10,
-      "transition": 5
-  },
-  {
-      "name": "Rogzor",
       "health": 10,
       "transition": 5
   },
@@ -121,32 +60,7 @@
       "transition": 5
   },
   {
-      "name": "Tharsis-5",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Ulgoth",
-      "health": 12,
-      "transition": 7
-  },
-  {
       "name": "White Dajan",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Xaxor",
-      "health": 10,
-      "transition": 5
-  },
-  {
-      "name": "Xixorax",
-      "health": 11,
-      "transition": 6
-  },
-  {
-      "name": "Yasheth",
       "health": 11,
       "transition": 5
   },
@@ -182,86 +96,6 @@
   },
   {
       "name": "Cassander",
-      "health": 11,
-      "transition": 6
-  },
-  {
-      "name": "Komkor 001",
-      "health": 11,
-      "transition": 6
-  },
-  {
-      "name": "Voyaka 099",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Zavod 075",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Preceptor",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "God of Vemana",
-      "health": 12,
-      "transition": 6
-  },
-  {
-      "name": "King of Camazotz",
-      "health": 11,
-      "transition": 7
-  },
-  {
-      "name": "Lord of Mictal",
-      "health": 10,
-      "transition": 4
-  },
-  {
-      "name": "Mogroth",
-      "health": 11,
-      "transition": 6
-  },
-  {
-      "name": "Phobos-7",
-      "health": 11,
-      "transition": 7
-  },
-  {
-      "name": "Karkinos",
-      "health": 10,
-      "transition": 4
-  },
-  {
-      "name": "Zor-Necros",
-      "health": 10,
-      "transition": 5
-  },
-  {
-      "name": "Zorog",
-      "health": 11,
-      "transition": 6
-  },
-  {
-      "name": "Mucustos",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Robo Kondo",
-      "health": 12,
-      "transition": 6
-  },
-  {
-      "name": "Ultra Cyber Khan",
-      "health": 11,
-      "transition": 5
-  },
-  {
-      "name": "Slingoozer",
       "health": 11,
       "transition": 6
   }

@@ -1,0 +1,12 @@
+[
+  {
+      "name": "Blastikutter",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Hammerklak",
+      "health": 10,
+      "transition": 5
+  }
+]
