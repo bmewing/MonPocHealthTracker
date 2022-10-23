@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Incinerus",
+      "health": 8,
+      "transition": 4
+  },
+  {
+      "name": "Hurricanius",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Tectomoc",
+      "health": 11,
+      "transition": 5
+  }
+]

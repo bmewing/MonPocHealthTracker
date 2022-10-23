@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Sergeant Titanica",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Earth Knight",
+      "health": 12,
+      "transition": 6
+  },
+  {
+      "name": "Grizzi",
+      "health": 11,
+      "transition": 5
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Master of Xolotl",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Queen of Ixmiqui",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Warden of Teocali",
+      "health": 12,
+      "transition": 6
+  }
+]

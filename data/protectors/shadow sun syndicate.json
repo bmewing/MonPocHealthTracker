@@ -1,0 +1,22 @@
+[
+  {
+      "name": "Zor-Magna",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Zor-Maxim",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Zor-Raiden",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Zor-Voltis",
+      "health": 10,
+      "transition": 5
+  }
+]

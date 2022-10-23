@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Rastaban",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Zybanos",
+      "health": 10,
+      "transition": 5
+  },
+  {
+      "name": "Gausamal",
+      "health": 10,
+      "transition": 5
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Avarvinea",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Floruina",
+      "health": 11,
+      "transition": 5
+  },
+  {
+      "name": "Stomatavorus Rex",
+      "health": 11,
+      "transition": 6
+  }
+]

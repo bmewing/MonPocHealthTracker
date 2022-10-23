@@ -1,0 +1,17 @@
+[
+  {
+      "name": "Cassander",
+      "health": 11,
+      "transition": 6
+  },
+  {
+      "name": "Numitor",
+      "health": 11,
+      "transition": 7
+  },
+  {
+      "name": "Taharka",
+      "health": 13,
+      "transition": 7
+  }
+]
